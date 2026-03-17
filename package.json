@@ -1,0 +1,30 @@
+{
+  "name": "imagegen",
+  "version": "1.0.0",
+  "description": "AI agent image generation tool via browser automation",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "imagegen": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "commander": "^14.0.3",
+    "playwright": "^1.58.2",
+    "sharp": "^0.34.5",
+    "typescript": "^5.9.3"
+  },
+  "devDependencies": {
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "vitest": "^4.1.0"
+  }
+}
