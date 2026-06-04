@@ -1,5 +1,18 @@
 # ImageGen — AI Agent Image Generation Tool
 
+[![License](https://img.shields.io/github/license/Hawkynt/ImageGen)](https://github.com/Hawkynt/ImageGen/blob/main/LICENSE)
+[![Language](https://img.shields.io/github/languages/top/Hawkynt/ImageGen?color=8957D5)](https://github.com/Hawkynt/ImageGen)
+
+[![CI](https://github.com/Hawkynt/ImageGen/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/Hawkynt/ImageGen/actions/workflows/ci.yml)
+![Last Commit](https://img.shields.io/github/last-commit/Hawkynt/ImageGen?branch=main)
+![Activity](https://img.shields.io/github/commit-activity/m/Hawkynt/ImageGen)
+
+[![Stars](https://img.shields.io/github/stars/Hawkynt/ImageGen?color=FFD700)](https://github.com/Hawkynt/ImageGen/stargazers)
+[![Forks](https://img.shields.io/github/forks/Hawkynt/ImageGen?color=008080)](https://github.com/Hawkynt/ImageGen/network/members)
+[![Issues](https://img.shields.io/github/issues/Hawkynt/ImageGen)](https://github.com/Hawkynt/ImageGen/issues)
+![Code Size](https://img.shields.io/github/languages/code-size/Hawkynt/ImageGen?color=4CAF50)
+![Repo Size](https://img.shields.io/github/repo-size/Hawkynt/ImageGen?color=FF9800)
+
 > A tool exposable to AI agents (via MCP, CLI, or function-call interface) that generates high-quality images from text prompts with optional image input — at zero cost — by browser-automating free web interfaces (Google Gemini, ChatGPT/DALL-E) or running local models via [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp).
 
 ---
