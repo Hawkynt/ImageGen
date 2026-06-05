@@ -26,6 +26,11 @@ export async function removeWatermark(imageBuffer: Buffer): Promise<Buffer> {
   const regionLeft = width - WM_OFFSET - WM_PAD;
   const regionTop = height - WM_OFFSET - WM_PAD;
 
+  if (regionLeft < 0 || regionTop < 0) {
+    debug(COMPONENT, "Image too small to contain watermark region, skipping watermark removal");
+    return imageBuffer;
+  }
+
   debug(COMPONENT, `Image: ${width}x${height}, watermark region: ${regionSize}px at (${regionLeft}, ${regionTop})`);
 
   // Watermark is in the BOTTOM-RIGHT corner with a fixed offset from the edge
