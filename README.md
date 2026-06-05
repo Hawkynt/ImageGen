@@ -1,4 +1,4 @@
-# ImageGen — AI Agent Image Generation Tool
+# ImageGen
 
 [![License](https://img.shields.io/github/license/Hawkynt/ImageGen)](https://github.com/Hawkynt/ImageGen/blob/main/LICENSE)
 [![Language](https://img.shields.io/github/languages/top/Hawkynt/ImageGen?color=8957D5)](https://github.com/Hawkynt/ImageGen)
@@ -20,7 +20,7 @@
 ## Table of Contents
 
 1. [Problem Statement](#problem-statement)
-2. [Quick Start](#quick-start)
+2. [Quick Start](#-quick-start)
 3. [Backends](#backends)
 4. [Domain Model (DDD)](#domain-model-ddd)
 5. [User Stories & MoSCoW Prioritization](#user-stories--moscow-prioritization)
@@ -45,7 +45,7 @@ AI agents need the ability to generate images as part of their workflows. Existi
 
 ---
 
-## Quick Start
+## 📦 Quick Start
 
 ```bash
 # Install dependencies
@@ -571,3 +571,14 @@ npm run test:all      # Everything
 | **ComfyUI**        | Node-based UI/API for Stable Diffusion workflows                                                                      |
 | **SD WebUI**       | Stable Diffusion Web UI (Automatic1111/Forge) with REST API                                                           |
 | **Generation Job** | A single end-to-end image generation request lifecycle                                                                |
+
+## ❤️ Support
+
+If this project saves you time or money, consider supporting its development:
+
+[![GitHub Sponsors](https://img.shields.io/badge/GitHub-Sponsor-EA4AAA?logo=githubsponsors)](https://github.com/sponsors/Hawkynt)
+[![PayPal](https://img.shields.io/badge/PayPal-Donate-00457C?logo=paypal)](https://www.paypal.me/hawkynt)
+
+## 📜 License
+
+Licensed under LGPL-3.0-or-later — see [LICENSE](LICENSE).
