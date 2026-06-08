@@ -31,7 +31,7 @@ jobs:
           node-version: '22'
       - name: Install, build, pack
         run: |
-          npm ci
+          npm install --no-audit --no-fund
           npm run build
           mkdir -p dist-pack
           npm pack --pack-destination dist-pack
