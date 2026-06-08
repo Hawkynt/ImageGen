@@ -13,6 +13,10 @@
 ![Code Size](https://img.shields.io/github/languages/code-size/Hawkynt/ImageGen?color=4CAF50)
 ![Repo Size](https://img.shields.io/github/repo-size/Hawkynt/ImageGen?color=FF9800)
 
+[![Release](https://img.shields.io/github/v/release/Hawkynt/ImageGen)](https://github.com/Hawkynt/ImageGen/releases/latest)
+[![Nightly](https://img.shields.io/github/v/release/Hawkynt/ImageGen?include_prereleases&sort=date&filter=nightly-*&label=nightly&color=FF9800)](https://github.com/Hawkynt/ImageGen/releases)
+[![Downloads](https://img.shields.io/github/downloads/Hawkynt/ImageGen/total)](https://github.com/Hawkynt/ImageGen/releases)
+
 > A tool exposable to AI agents (via MCP, CLI, or function-call interface) that generates high-quality images from text prompts with optional image input — at zero cost — by browser-automating free web interfaces (Google Gemini, ChatGPT/DALL-E) or running local models via [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp).
 
 ---
