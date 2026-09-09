@@ -21,7 +21,59 @@
 
 ---
 
-## Table of Contents
+## 🧭 Vision
+
+Every image generator has its own client, its own auth and its own idea of what a prompt is, and
+switching between them means rewriting the call site. ImageGen puts one interface in front of all of
+them — the hosted ones driven through a real browser session, and a local backend that needs no
+account at all — so choosing a backend is a flag rather than a rewrite.
+
+The local path matters most: `sd.cpp` with a model downloaded on first run means the tool still works
+with no login, no key and no network.
+
+## ✨ Features
+
+- One interface over several backends: Gemini, ChatGPT, and local `sd.cpp` / SD WebUI / ComfyUI
+- Text-to-image and image-to-image, with multiple reference images
+- Browser backends driven through a real logged-in session rather than an API key
+- A local backend that downloads its own binary and model on first run — no account, no network afterwards
+- Dimension control, verbose debugging with saved screenshots
+
+## 📦 Installation
+
+```bash
+npm install
+```
+
+Browser backends need a one-off interactive login; the local backend downloads `sd.cpp` and a model
+on first use (about 2 GB, or ~5 GB for FLUX.2 Klein 4B).
+
+## 🚀 Quick start
+
+```bash
+# Log in once to a browser backend (opens a headed browser)
+npm start -- login --backend gemini
+
+# Generate
+npm start -- "a lighthouse in a storm" --backend gemini
+
+# Or locally, with no login at all
+npm start -- "a lighthouse in a storm" --backend local
+```
+
+## 🎯 Problem statement
+
+AI agents need the ability to generate images as part of their workflows. Existing solutions either cost money per generation (DALL-E API, Midjourney) or require complex local setup. Many models offer free generation through their web interfaces but not through their APIs — or API usage is billed separately from a paid plan. This tool provides a single, agent-friendly interface that:
+
+- Accepts a text prompt and optional reference image(s)
+- Returns a generated image (file path)
+- Costs nothing to run — by automating free web UIs or using local models
+- Produces high-quality results (Gemini 2.0 Flash, GPT-4o/DALL-E 3, Stable Diffusion)
+- Is simple enough for any agent framework to invoke
+
+---
+
+## 📑 Table of contents
 
 1. [Problem Statement](#problem-statement)
 2. [Quick Start](#-quick-start)
@@ -37,67 +89,7 @@
 
 ---
 
-## Problem Statement
-
-AI agents need the ability to generate images as part of their workflows. Existing solutions either cost money per generation (DALL-E API, Midjourney) or require complex local setup. Many models offer free generation through their web interfaces but not through their APIs — or API usage is billed separately from a paid plan. This tool provides a single, agent-friendly interface that:
-
-- Accepts a text prompt and optional reference image(s)
-- Returns a generated image (file path)
-- Costs nothing to run — by automating free web UIs or using local models
-- Produces high-quality results (Gemini 2.0 Flash, GPT-4o/DALL-E 3, Stable Diffusion)
-- Is simple enough for any agent framework to invoke
-
----
-
-## 📦 Quick Start
-
-```bash
-# Install dependencies
-npm install
-
-# --- Browser backends (Gemini / ChatGPT) ---
-
-# 1. Log in to a browser backend (opens headed browser for manual auth)
-npx tsx src/index.ts login --backend gemini
-npx tsx src/index.ts login --backend chatgpt
-
-# 2. Generate an image
-npx tsx src/index.ts generate --prompt "A sunset over mountains"
-npx tsx src/index.ts generate --prompt "A red sports car" --backend chatgpt
-
-# 3. Image-to-image (multiple reference images supported)
-npx tsx src/index.ts generate --prompt "Put the character on a spritesheet" \
-  --image input/character.png --image input/template.jpg
-
-# --- Local backend (sd.cpp — no login needed) ---
-
-# Auto-downloads sd.cpp binary + SD 1.5 model on first run (~2 GB total)
-npx tsx src/index.ts generate --prompt "A pixel art castle" --backend local
-
-# Use FLUX.2 Klein 4B for much higher quality (downloads ~5 GB on first run)
-npx tsx src/index.ts generate --prompt "A pixel art castle" --backend local --model flux
-
-# Or connect to an existing SD WebUI / ComfyUI API
-npx tsx src/index.ts generate --prompt "A logo" --backend local \
-  --api-url http://localhost:7860
-
-# Verbose debug output (saves screenshots to debug/)
-npx tsx src/index.ts generate --prompt "A cat" -v
-```
-
-**Output:** JSON to stdout with the generated image path:
-```json
-{
-  "success": true,
-  "filePath": "D:\\Working Copies\\ImageGen\\output\\gen_2026-03-17T06-25-41-506Z.png",
-  "backend": "gemini",
-  "durationMs": 114703
-}
-```
-
----
-
-## Backends
+## 🎨 Backends
 
 ### Gemini (default)
 
@@ -158,7 +150,7 @@ FLUX.2 Klein 4B is from [Black Forest Labs](https://blackforestlabs.ai/) — a t
 
 ---
 
-## Domain Model (DDD)
+## 🧱 Domain model (DDD)
 
 ### Bounded Contexts
 
@@ -189,7 +181,7 @@ FLUX.2 Klein 4B is from [Black Forest Labs](https://blackforestlabs.ai/) — a t
 
 ---
 
-## User Stories & MoSCoW Prioritization
+## 📋 User stories & MoSCoW prioritization
 
 ### Must Have (M) ✅
 
@@ -229,7 +221,7 @@ FLUX.2 Klein 4B is from [Black Forest Labs](https://blackforestlabs.ai/) — a t
 
 ---
 
-## Acceptance Criteria (BDD)
+## ✅ Acceptance criteria (BDD)
 
 ### US-1: Text-to-Image Generation
 
@@ -334,55 +326,7 @@ Feature: MCP Tool Interface
 
 ---
 
-## Technical Architecture
-
-### Stack
-
-- **Language:** TypeScript (Node.js)
-- **CLI framework:** Commander
-- **MCP SDK:** `@modelcontextprotocol/sdk` (planned)
-- **Browser automation:** Playwright (controls Gemini and ChatGPT web UIs)
-- **Local model runtime:** [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp) (auto-provisioned) or external SD WebUI/ComfyUI API
-- **Image processing:** Sharp (watermark removal, format detection)
-- **Test framework:** Vitest (planned)
-
-### Project Structure
-
-```
-ImageGen/
-  README.md              # This file — PRD + documentation
-  package.json
-  tsconfig.json
-  src/
-    index.ts             # CLI entrypoint
-    mcp-server.ts        # MCP server entrypoint (planned)
-    domain/
-      generation-request.ts   # Request value object (prompt, images, params)
-      generation-result.ts    # Result type (filePath, backend, duration, error)
-      image-input.ts          # Image reference value object
-      prompt.ts               # Prompt value object with validation
-    core/
-      generation-job.ts       # Orchestrates generation, selects backend
-      watermark-remover.ts    # Detects & removes Gemini watermark
-    backends/
-      backend-provider.ts      # BackendProvider interface
-      browser-backend-base.ts  # Shared browser automation logic
-      gemini-backend.ts        # Gemini-specific overrides
-      chatgpt-backend.ts       # ChatGPT-specific overrides
-      local-backend.ts         # sd.cpp CLI + API mode
-      element-discovery.ts     # Heuristic element finding (text input, submit, image)
-    session/
-      session-manager.ts       # Playwright persistent context + login flow
-    debug/
-      logger.ts                # Verbose logger, screenshot/HTML captures
-  output/                # Default output directory (gitignored)
-  input/                 # Test input images
-  debug/                 # Debug screenshots (gitignored)
-```
-
----
-
-## Backends
+## 🔬 Backend internals
 
 ### Browser Automation (Gemini, ChatGPT)
 
@@ -441,7 +385,7 @@ interface BackendProvider {
 
 ---
 
-## API / Interface Contract
+## 📄 API / interface contract
 
 ### CLI
 
@@ -513,7 +457,7 @@ imagegen generate --prompt "A cat" -v
 
 ---
 
-## Test Strategy (TDD/BDD)
+## 🧪 Test strategy (TDD/BDD)
 
 ### Unit Tests (TDD)
 
@@ -548,7 +492,7 @@ npm run test:all      # Everything
 
 ---
 
-## Non-Functional Requirements
+## 📐 Non-functional requirements
 
 | Requirement     | Target                                                                |
 | --------------- | --------------------------------------------------------------------- |
@@ -561,7 +505,7 @@ npm run test:all      # Everything
 
 ---
 
-## Glossary
+## 📖 Glossary
 
 | Term               | Definition                                                                                                            |
 | ------------------ | --------------------------------------------------------------------------------------------------------------------- |
@@ -575,6 +519,62 @@ npm run test:all      # Everything
 | **ComfyUI**        | Node-based UI/API for Stable Diffusion workflows                                                                      |
 | **SD WebUI**       | Stable Diffusion Web UI (Automatic1111/Forge) with REST API                                                           |
 | **Generation Job** | A single end-to-end image generation request lifecycle                                                                |
+
+## 🏗️ Architecture
+
+### Stack
+
+- **Language:** TypeScript (Node.js)
+- **CLI framework:** Commander
+- **MCP SDK:** `@modelcontextprotocol/sdk` (planned)
+- **Browser automation:** Playwright (controls Gemini and ChatGPT web UIs)
+- **Local model runtime:** [stable-diffusion.cpp](https://github.com/leejet/stable-diffusion.cpp) (auto-provisioned) or external SD WebUI/ComfyUI API
+- **Image processing:** Sharp (watermark removal, format detection)
+- **Test framework:** Vitest (planned)
+
+### Project Structure
+
+```
+ImageGen/
+  README.md              # This file — PRD + documentation
+  package.json
+  tsconfig.json
+  src/
+    index.ts             # CLI entrypoint
+    mcp-server.ts        # MCP server entrypoint (planned)
+    domain/
+      generation-request.ts   # Request value object (prompt, images, params)
+      generation-result.ts    # Result type (filePath, backend, duration, error)
+      image-input.ts          # Image reference value object
+      prompt.ts               # Prompt value object with validation
+    core/
+      generation-job.ts       # Orchestrates generation, selects backend
+      watermark-remover.ts    # Detects & removes Gemini watermark
+    backends/
+      backend-provider.ts      # BackendProvider interface
+      browser-backend-base.ts  # Shared browser automation logic
+      gemini-backend.ts        # Gemini-specific overrides
+      chatgpt-backend.ts       # ChatGPT-specific overrides
+      local-backend.ts         # sd.cpp CLI + API mode
+      element-discovery.ts     # Heuristic element finding (text input, submit, image)
+    session/
+      session-manager.ts       # Playwright persistent context + login flow
+    debug/
+      logger.ts                # Verbose logger, screenshot/HTML captures
+  output/                # Default output directory (gitignored)
+  input/                 # Test input images
+  debug/                 # Debug screenshots (gitignored)
+```
+
+---
+
+## 🛠️ Building
+
+```bash
+npm install
+npm test
+npm run lint
+```
 
 ## ❤️ Support
 
